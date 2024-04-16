@@ -1,11 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    test
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐾개발자취🐾</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+      import {
+        collection,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+      import {
+        doc,
+        getDoc,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyC0ZJ1e-znOrvP4dmlZ53end6N6A0OaUm8",
+        authDomain: "introteam-6a680.firebaseapp.com",
+        projectId: "introteam-6a680",
+        storageBucket: "introteam-6a680.appspot.com",
+        messagingSenderId: "284189308059",
+        appId: "1:284189308059:web:a48130e6f4868ac63b823e",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      let docs = await getDocs(collection(db, "team"));
+      docs.forEach((doc) => {
+        let row = doc.data();
+        let name = row["name"];
+        let image = row["image"];
+        let mbti = row["mbti"];
+        let strengths = row["strengts"];
+        let style = row["style"];
+        let goal = row["goal"];
+        let blog = row["blog"];
+        let id = doc.id;
+
+        let temp_html = `
+        <div class="col">
+            <img
+              src="${image}"
+              class="rounded-circle"
+              data-id="${id}"
+            />
+            <h5>${name}</h5>
+          </div>
+        `;
+        $("#cardBox").append(temp_html);
+      });
+
+      $(".rounded-circle").click(async function () {
+        $(".gbjc_member").empty();
+        let id = this.dataset["id"];
+        let data = await getDoc(doc(db, "team", id));
+        $("body").toggleClass("open");
+        let name = data.data()["name"];
+        let img = data.data()["image"];
+        let mbti = data.data()["mbti"];
+        let goal = data.data()["goal"];
+        let style = data.data()["style"];
+        let strengths = data.data()["strengths"];
+        let blog = data.data()["blog"];
+
+        let append_html = `
+        <div class="header">
+          <button class="btn-close"/>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-6">
+            <img
+              src="${img}"
+            />
+            <h1>${name}</h1>
+          </div>
+          <div class="col-3">
+            <a href="${blog}">
+              <div class="btn_blog">
+                <p class="icon-p">🔗</p>
+                <p>블로그링크</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="self_intro">
+          <div class="item">
+            <h2>MBTI</h2>
+            <p>${mbti}</p>
+          </div>
+          <div class="item">
+            <h2>나의 장점</h2>
+            <p>${strengths}</p>
+          </div>
+          <div class="item">
+            <h2>협업스타일</h2>
+            <p>${style}</p>
+          </div>
+          <div class="item">
+            <h2>캠프 참여의 궁극적인 목표</h2>
+            <p>${goal}</p>
+          </div>
+        </div>
+        `;
+        $(".gbjc_member").append(append_html);
+        $(".btn-close").click(async function () {
+          $("body").removeClass("open");
+        });
+      });
+
+      $("#closeBtn").click(function () {
+        $("#password").val("");
+      });
+
+      function authenticateAndRedirect() {
+        const inputPassword = $("#password").val();
+        const expectedHash =
+          "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4";
+        console.log(1234);
+        if (sha256(inputPassword) === expectedHash) {
+          alert("인증되었습니다.");
+          window.location.href = "management.html";
+        } else {
+          alert("비밀번호가 일치하지 않습니다.");
+        }
+      }
+
+      $("#management-btn").click(authenticateAndRedirect);
+
+      $("#password").keydown(function (event) {
+        if (event.which === 13) {
+          authenticateAndRedirect();
+        }
+      });
+
+      $("#guestButton").click(async function () {
+        window.location.href = "guest.html";
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="gbjc_member"></div>
+      <div class="myTitle">
+        <div class="button" id="guestButton">
+          <button type="button" class="btn">
+            <img src="images/icon2.png" />
+          </button>
+          <h5>방명록</h5>
+        </div>
+        <div class="title">
+          <h1 style="font-size: 70px; font-weight: bold">
+            🐾 개발<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자국
+            🐾
+          </h1>
+        </div>
+        <div
+          class="button"
+          data-bs-toggle="modal"
+          data-bs-target="#managementModal"
+        >
+          <button type="button" class="btn">
+            <img src="images/icon.png" />
+          </button>
+          <h5>관리자</h5>
+        </div>
+      </div>
+      <div class="msgbox">
+        <div class="msgboxDiv">
+          <div class="left">
+            <div>
+              <h2 class="display-6 fw-bold">🐾Team. 개발자취</h2>
+              <p>
+                <br />개발자는 개발문서를 학습하고<br />기록하여 자신의 발자취를
+                남긴다 🐾
+              </p>
+              <a
+                href="https://github.com/junxtar/team_introduce"
+                target="_blank"
+              >
+                <img class="icon" src="images/icon3.png" />
+              </a>
+              <a
+                href="https://teamsparta.notion.site/B-9-S-A-0fb905dadf00408bb3547405995183d8"
+                target="_blank"
+                style="margin-left: 10px"
+              >
+                <img class="icon" src="images/icon4.png" />
+              </a>
+            </div>
+          </div>
+          <div class="right">
+            <h2 class="display-6 fw-bold">우리 팀의 특징</h2>
+            <ul>
+              <li>의사소통이 원활하게 이루어 진다.</li>
+              <li>팀원 간의 배려심과 신뢰도가 높다.</li>
+              <li>팀장이 리더십 역량을 잘 갖추고 있다.</li>
+              <li>팀원끼리 꾸준한 경험 공유한다.</li>
+              <li>서로 실력 향상을 위해 노력하며 도와준다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="msgbox">
+        <div class="msgboxDiv">
+          <div class="left">
+            <br />
+            <h2 class="display-6 fw-bold">🐾Team. 규칙</h2>
+          </div>
+          <div class="right">
+            <ul>
+              <li>09:00 - 09:30 아침 회의</li>
+              <li>20:30 ~ 21:00 팀원 마무리 회의</li>
+              <li>20:00 ~ 20:30 알고리즘 학습 시간</li>
+              <li>매일 TIL 블로그 업로드 및 공유</li>
+              <li>구글링을 잘하자</li>
+              <li>이슈 발생시 팀원들과 공유</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="myCards">
+        <div
+          id="cardBox"
+          class="row row-cols-1 row-cols-lg-3 g-4 justify-content-center"
+        ></div>
+      </div>
+      <hr />
+    </div>
+    <div
+      class="modal fade"
+      id="managementModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              ⚙️ 관리자 비밀번호
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="return false;">
+              <div class="mb-3">
+                <label for="password" class="col-form-label"> 비밀번호 </label>
+                <input type="password" class="form-control" id="password" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              id="closeBtn"
+            >
+              닫기
+            </button>
+            <button type="button" class="btn btn-primary" id="management-btn">
+              접속하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- bootstram js 사용 import -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
