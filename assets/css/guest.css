@@ -80,6 +80,9 @@ header {
 
 .star {
   color: green; 
+<<<<<<< HEAD:guest.css
+}
+=======
 }
 .search-container {
   display: flex;         
@@ -91,3 +94,4 @@ input[type="search"] {
   margin-right: 8px;    
 }
 
+>>>>>>> c80f1b334cc62635a93dd5fe246550809c6282cc:assets/css/guest.css
