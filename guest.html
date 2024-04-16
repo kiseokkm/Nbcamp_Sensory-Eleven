@@ -1,57 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🐾방명록🐾</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-    <link rel="stylesheet" href="guest.css" />
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-      import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-      import {
-        collection,
-        addDoc,
-      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-      import {
-        doc,
-        getDoc,
-        getDocs,
-        updateDoc,
-        deleteDoc,
-        query,
-        orderBy,
-      } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-      const firebaseConfig = {
-        apiKey: "AIzaSyC0ZJ1e-znOrvP4dmlZ53end6N6A0OaUm8",
-        authDomain: "introteam-6a680.firebaseapp.com",
-        projectId: "introteam-6a680",
-        storageBucket: "introteam-6a680.appspot.com",
-        messagingSenderId: "284189308059",
-        appId: "1:284189308059:web:a48130e6f4868ac63b823e",
-      };
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
 
-      let dateDesc = query(collection(db, "guest"), orderBy("date", "desc"));
-      let docs = await getDocs(dateDesc);
-      docs.forEach((doc) => {
-        let row = doc.data();
-        let writer = row["writer"];
-        let content = row["content"];
-        let password = row["password"];
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>방명록</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+  <link rel="stylesheet" href="guest.css" />
 
-        let id = doc.id;
-        let transformId = "a" + id;
 
-        let temp_html = `
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import {
+      collection,
+      addDoc,
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    import {
+      doc,
+      getDoc,
+      getDocs,
+      updateDoc,
+      deleteDoc,
+      query,
+      orderBy,
+    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+    // 2024년 수정 완료
+    const firebaseConfig = {
+      apiKey: "AIzaSyAPKMfBYrh_6RXyTAD7B6_KLlXHzDP2mmk",
+      authDomain: "sensory-eleven.firebaseapp.com",
+      projectId: "sensory-eleven",
+      storageBucket: "sensory-eleven.appspot.com",
+      messagingSenderId: "903447585900",
+      appId: "1:903447585900:web:bc595869999f5b41dda449",
+      measurementId: "G-5Q6WJ5P46Y"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    
+    let dateDesc = query(collection(db, "guest"), orderBy("date", "desc"));
+    let docs = await getDocs(dateDesc);
+    docs.forEach((doc) => {
+      let row = doc.data();
+      let writer = row["writer"];
+      let content = row["content"];
+      let password = row["password"];
+
+      let id = doc.id;
+      let transformId = "a" + id;
+
+      let temp_html = `
         <div class="item">
         <h2 class="accordion-header">
           <button class="accordion-button collapsed"
@@ -79,327 +82,252 @@
             >삭제</button>
         </div>
         `;
-        $("#list").append(temp_html);
+      $("#list").append(temp_html);
+    });
+
+    $(".update-btn").click(async function () {
+      let id = this.dataset["id"];
+      let data = await getDoc(doc(db, "guest", id));
+
+      let writer = data.data()["writer"];
+      let content = data.data()["content"];
+      let password = data.data()["password"];
+
+      $("input[id=writer-modal]").attr("value", writer);
+      $("input[id=content-modal]").attr("value", content);
+
+      $("#updateClose").click(() => {
+        $("#writer-modal").val(writer);
+        $("#content-modal").val(content);
+        $("#password").val("");
       });
 
-      $(".update-btn").click(async function () {
-        let id = this.dataset["id"];
-        let data = await getDoc(doc(db, "guest", id));
-
-        let writer = data.data()["writer"];
-        let content = data.data()["content"];
-        let password = data.data()["password"];
-
-        $("input[id=writer-modal]").attr("value", writer);
-        $("input[id=content-modal]").attr("value", content);
-
-        $("#updateClose").click(() => {
-          $("#writer-modal").val(writer);
-          $("#content-modal").val(content);
-          $("#password").val("");
-        });
-
-        const updateHandle = async () => {
-          let inputPassword = $("#password").val();
-          if (sha256(inputPassword) == password) {
-            const guest = doc(db, "guest", id);
-            let writer = $("#writer-modal").val();
-            let content = $("#content-modal").val();
-            let inform = {
-              writer: writer,
-              content: content,
-              date: new Date(),
-            };
-            await updateDoc(guest, inform);
-            alert("수정되었습니다.");
-            window.location.reload();
-          } else {
-            alert("비밀번호가 일치하지 않습니다.");
-          }
-        };
-        $("#update").click(updateHandle);
-
-        $("#password").keydown((event) => {
-          if (event.which === 13) {
-            updateHandle();
-          }
-        });
-      });
-
-      $(".delete-btn").click(async function () {
-        let id = this.dataset["id"];
-        let data = await getDoc(doc(db, "guest", id));
-
-        let password = data.data()["password"];
-        $("#deleteClose").click(() => $("#deletePassword").val(""));
-
-        const handleDelete = async () => {
-          const inputPassword = $("#deletePassword").val();
-          if (sha256(inputPassword) === password) {
-            await deleteDoc(doc(db, "guest", id));
-            alert("삭제되었습니다.");
-            window.location.reload();
-          } else {
-            alert("비밀번호가 일치하지 않습니다.");
-          }
-        };
-
-        $("#delete").click(handleDelete);
-        $("#deletePassword").keydown((event) => {
-          if (event.which === 13) {
-            handleDelete();
-          }
-        });
-      });
-
-      const writeHandle = async () => {
-        let writer = $("#writer").val();
-        let content = $("#content").val();
-        let password = $("#pwd").val();
-
-        let inform = {
-          writer: writer,
-          content: content,
-          password: sha256(password),
-          date: new Date(),
-        };
-
-        if (writer !== "" && content !== "" && password !== "") {
-          await addDoc(collection(db, "guest"), inform);
-          alert("기록완료");
+      const updateHandle = async () => {
+        let inputPassword = $("#password").val();
+        if (sha256(inputPassword) == password) {
+          const guest = doc(db, "guest", id);
+          let writer = $("#writer-modal").val();
+          let content = $("#content-modal").val();
+          let inform = {
+            writer: writer,
+            content: content,
+            date: new Date(),
+          };
+          await updateDoc(guest, inform);
+          alert("수정되었습니다.");
           window.location.reload();
         } else {
-          alert("빈칸을 채워주세요.");
+          alert("비밀번호가 일치하지 않습니다.");
+        }
+      };
+      $("#update").click(updateHandle);
+
+      $("#password").keydown((event) => {
+        if (event.which === 13) {
+          updateHandle();
+        }
+      });
+    });
+
+    $(".delete-btn").click(async function () {
+      let id = this.dataset["id"];
+      let data = await getDoc(doc(db, "guest", id));
+
+      let password = data.data()["password"];
+      $("#deleteClose").click(() => $("#deletePassword").val(""));
+
+      const handleDelete = async () => {
+        const inputPassword = $("#deletePassword").val();
+        if (sha256(inputPassword) === password) {
+          await deleteDoc(doc(db, "guest", id));
+          alert("삭제되었습니다.");
+          window.location.reload();
+        } else {
+          alert("비밀번호가 일치하지 않습니다.");
         }
       };
 
-      $("#write").click(writeHandle);
-
-      $("#pwd").keydown(async function (event) {
+      $("#delete").click(handleDelete);
+      $("#deletePassword").keydown((event) => {
         if (event.which === 13) {
-          writeHandle();
+          handleDelete();
         }
       });
+    });
 
-      $("#inputClose").click(function () {
-        $("#writer").val("");
-        $("#content").val("");
-        $("#pwd").val("");
-      });
+    const writeHandle = async () => {
+      let writer = $("#writer").val();
+      let content = $("#content").val();
+      let password = $("#pwd").val();
 
-      $("#home").click(async function () {
-        window.location.href = "index.html";
-      });
-    </script>
-  </head>
+      let inform = {
+        writer: writer,
+        content: content,
+        password: sha256(password),
+        date: new Date(),
+      };
 
-  <body>
-    <div class="main">
-      <header>
-        <div id="home">
-          <h4 style="font-size: 35px; font-weight: 800">
-            🐾 개발<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자국
-            🐾
-          </h4>
-        </div>
-        <div class="title">
-          <h1 style="font-size: 50px; font-weight: 800">🐾 방명록 🐾</h1>
-        </div>
-        <div class="button" id="guestButton">
-          <button
-            type="button"
-            class="btn"
-            data-bs-toggle="modal"
-            data-bs-target="#writerModal"
-          >
-            <img src="images/icon2.png" />
-          </button>
-          <h5>작성하기</h5>
-        </div>
-      </header>
-      <!-- 방명록 리스트 -->
-      <div class="accordion accordion-flush" id="list"></div>
+      if (writer !== "" && content !== "" && password !== "") {
+        await addDoc(collection(db, "guest"), inform);
+        alert("기록완료");
+        window.location.reload();
+      } else {
+        alert("빈칸을 채워주세요.");
+      }
+    };
 
-      <!-- 입력 모달 -->
-      <div
-        class="modal fade"
-        id="writerModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2
-                class="modal-title fs-5"
-                id="exampleModalLabel"
-                style="font-weight: 700"
-              >
-                방명록 작성하기
-              </h2>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
+    $("#write").click(writeHandle);
+
+    $("#pwd").keydown(async function (event) {
+      if (event.which === 13) {
+        writeHandle();
+      }
+    });
+
+    $("#inputClose").click(function () {
+      $("#writer").val("");
+      $("#content").val("");
+      $("#pwd").val("");
+    });
+
+    $("#home").click(async function () {
+      window.location.href = "index.html";
+    });
+  </script>
+</head>
+
+<body>
+  <div class="main">
+    <header>
+      <div id="home">
+        <h4 style="font-size: 35px; font-weight: 800">
+          🐾 개발<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자국
+          🐾
+        </h4>
+      </div>
+      <div class="title">
+        <h1 style="font-size: 50px; font-weight: 800">🐾 방명록 🐾</h1>
+      </div>
+      <div class="button" id="guestButton">
+        <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
+          <img src="images/icon2.png" />
+        </button>
+        <h5>작성하기</h5>
+      </div>
+    </header>
+    <!-- 방명록 리스트 -->
+    <div class="accordion accordion-flush" id="list"></div>
+
+    <!-- 입력 모달 -->
+    <div class="modal fade" id="writerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title fs-5" id="exampleModalLabel" style="font-weight: 700">
+              방명록 작성하기
+            </h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating mb-3">
+              <input class="form-control" id="writer" placeholder="작성자" />
+              <label for="writer">작성자</label>
             </div>
-            <div class="modal-body">
-              <div class="form-floating mb-3">
-                <input class="form-control" id="writer" placeholder="작성자" />
-                <label for="writer">작성자</label>
-              </div>
-              <div class="form-floating">
-                <textarea
-                  class="form-control fs-10"
-                  placeholder="Leave a comment here"
-                  id="content"
-                  style="height: 100px"
-                ></textarea>
-                <label for="content">내용</label>
-              </div>
-              <div class="form-floating mt-3">
-                <input
-                  class="form-control mt-10"
-                  type="password"
-                  id="pwd"
-                  placeholder="비밀번호"
-                />
-                <label for="pwd">비밀번호</label>
-              </div>
+            <div class="form-floating">
+              <textarea class="form-control fs-10" placeholder="Leave a comment here" id="content"
+                style="height: 100px"></textarea>
+              <label for="content">내용</label>
             </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="inputClose"
-              >
-                닫기
-              </button>
-              <button type="button" class="btn btn-primary" id="write">
-                작성하기
-              </button>
+            <div class="form-floating mt-3">
+              <input class="form-control mt-10" type="password" id="pwd" placeholder="비밀번호" />
+              <label for="pwd">비밀번호</label>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- 수정 모달 -->
-      <div
-        class="modal fade"
-        id="updateModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form onsubmit="return false;">
-                <div class="mb-3">
-                  <label for="writer-modal" class="col-form-label"
-                    >작성자</label
-                  >
-                  <input type="text" class="form-control" id="writer-modal" />
-                </div>
-              </form>
-              <form onsubmit="return false;">
-                <div class="mb-3">
-                  <label for="content-modal" class="col-form-label">내용</label>
-                  <input type="text" class="form-control" id="content-modal" />
-                </div>
-              </form>
-              <form onsubmit="return false;">
-                <div class="mb-3">
-                  <label for="password" class="col-form-label">비밀번호</label>
-                  <input type="password" class="form-control" id="password" />
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="updateClose"
-              >
-                닫기
-              </button>
-              <button type="button" class="btn btn-primary" id="update">
-                수정하기
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 삭제 모달 -->
-      <div
-        class="modal fade"
-        id="deleteModal"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                정말 삭제하시겠습니까?
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <form onsubmit="return false;">
-                <div class="mb-3">
-                  <label for="deletePassword" class="col-form-label"
-                    >비밀번호</label
-                  >
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="deletePassword"
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                id="deleteClose"
-              >
-                닫기
-              </button>
-              <button type="button" class="btn btn-primary" id="delete">
-                삭제하기
-              </button>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="inputClose">
+              닫기
+            </button>
+            <button type="button" class="btn btn-primary" id="write">
+              작성하기
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <!-- bootstram js 사용 import -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+    <!-- 수정 모달 -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">수정하기</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="return false;">
+              <div class="mb-3">
+                <label for="writer-modal" class="col-form-label">작성자</label>
+                <input type="text" class="form-control" id="writer-modal" />
+              </div>
+            </form>
+            <form onsubmit="return false;">
+              <div class="mb-3">
+                <label for="content-modal" class="col-form-label">내용</label>
+                <input type="text" class="form-control" id="content-modal" />
+              </div>
+            </form>
+            <form onsubmit="return false;">
+              <div class="mb-3">
+                <label for="password" class="col-form-label">비밀번호</label>
+                <input type="password" class="form-control" id="password" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="updateClose">
+              닫기
+            </button>
+            <button type="button" class="btn btn-primary" id="update">
+              수정하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 삭제 모달 -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              정말 삭제하시겠습니까?
+            </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form onsubmit="return false;">
+              <div class="mb-3">
+                <label for="deletePassword" class="col-form-label">비밀번호</label>
+                <input type="password" class="form-control" id="deletePassword" />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="deleteClose">
+              닫기
+            </button>
+            <button type="button" class="btn btn-primary" id="delete">
+              삭제하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- bootstram js 사용 import -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
