@@ -32,6 +32,3 @@ const onClickSignoutBtn = () => {
     deleteSession();
     checkLogin();
 }
-
-signin_form_btn.addEventListener("click", onClickLoginBtn);
-signout_btn.addEventListener("click", onClickSignoutBtn);
