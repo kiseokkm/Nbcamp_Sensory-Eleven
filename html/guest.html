@@ -10,16 +10,14 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
   <link rel="stylesheet" href="../assets/css/guest.css" />
-  
+
 
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import {
       collection,
       addDoc,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
     import {
       doc,
       getDoc,
@@ -28,20 +26,10 @@
       deleteDoc,
       query,
       orderBy,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-
-    // 2024년 수정 완료
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPKMfBYrh_6RXyTAD7B6_KLlXHzDP2mmk",
-      authDomain: "sensory-eleven.firebaseapp.com",
-      projectId: "sensory-eleven",
-      storageBucket: "sensory-eleven.appspot.com",
-      messagingSenderId: "903447585900",
-      appId: "1:903447585900:web:bc595869999f5b41dda449",
-      measurementId: "G-5Q6WJ5P46Y"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+    import database from "./js/database.js";
+    // db 호출
+    const db = database.getDb();
 
     function renderStars(rating) {
       let stars = "";
@@ -223,7 +211,7 @@
       </div>
       <div class="button" id="guestButton">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
-          <img src="../assets/img/icon2.png"/>
+          <img src="../assets/img/icon2.png" />
         </button>
         <h5>작성하기</h5>
       </div>
