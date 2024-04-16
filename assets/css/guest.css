@@ -81,3 +81,13 @@ header {
 .star {
   color: green; 
 }
+.search-container {
+  display: flex;         
+  justify-content: flex-end; 
+  align-items: center;   
+}
+
+input[type="search"] {
+  margin-right: 8px;    
+}
+
