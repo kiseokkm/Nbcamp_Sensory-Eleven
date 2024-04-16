@@ -42,17 +42,28 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    
+    function renderStars(rating) {
+      let stars = "";
+      for (let i = 0; i < rating; i++) {
+        stars += `<span class="star">&#9733;</span>`;  // 노란색 별 문자
+      }
+      return stars;
+    }
+
+
     let dateDesc = query(collection(db, "guest"), orderBy("date", "desc"));
     let docs = await getDocs(dateDesc);
     docs.forEach((doc) => {
       let row = doc.data();
       let writer = row["writer"];
       let content = row["content"];
+      let rating = row["rating"];
       let password = row["password"];
 
       let id = doc.id;
       let transformId = "a" + id;
+
+      let starsHtml = renderStars(rating);
 
       let temp_html = `
         <div class="item">
@@ -63,7 +74,7 @@
           data-bs-target=".${transformId}"
           aria-expanded="false"
           >
-            ${writer}님
+            ${writer}님  <hr> ${starsHtml}
           </button>
         </h2>
         <div class="${transformId} accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
@@ -87,40 +98,40 @@
 
     $(".update-btn").click(async function () {
       let id = this.dataset["id"];
-      let data = await getDoc(doc(db, "guest", id));
+      let docRef = doc(db, "guest", id);  // 문서 참조 생성
+      let data = await getDoc(docRef);
 
       let writer = data.data()["writer"];
       let content = data.data()["content"];
+      let rating = data.data()["rating"];
       let password = data.data()["password"];
 
-      $("input[id=writer-modal]").attr("value", writer);
-      $("input[id=content-modal]").attr("value", content);
-
-      $("#updateClose").click(() => {
-        $("#writer-modal").val(writer);
-        $("#content-modal").val(content);
-        $("#password").val("");
-      });
+      $("input[id='writer-modal']").val(writer);
+      $("input[id='content-modal']").val(content);
+      $("#update-rating").val(rating);
 
       const updateHandle = async () => {
         let inputPassword = $("#password").val();
         if (sha256(inputPassword) == password) {
-          const guest = doc(db, "guest", id);
-          let writer = $("#writer-modal").val();
-          let content = $("#content-modal").val();
+          let updatedWriter = $("#writer-modal").val();
+          let updatedContent = $("#content-modal").val();
+          let updatedRating = $("#update-rating").val();
+
           let inform = {
-            writer: writer,
-            content: content,
+            writer: updatedWriter,
+            content: updatedContent,
+            rating: updatedRating,
             date: new Date(),
           };
-          await updateDoc(guest, inform);
+          await updateDoc(docRef, inform);  // 정확한 docRef 사용
           alert("수정되었습니다.");
           window.location.reload();
         } else {
           alert("비밀번호가 일치하지 않습니다.");
         }
       };
-      $("#update").click(updateHandle);
+
+      $("#update").off('click').on('click', updateHandle);  // 이벤트 리스너 중복 방지를 위해 off() 사용
 
       $("#password").keydown((event) => {
         if (event.which === 13) {
@@ -158,11 +169,13 @@
     const writeHandle = async () => {
       let writer = $("#writer").val();
       let content = $("#content").val();
+      let rating = $("#rating").val();
       let password = $("#pwd").val();
 
       let inform = {
         writer: writer,
         content: content,
+        rating: rating,
         password: sha256(password),
         date: new Date(),
       };
@@ -201,12 +214,11 @@
     <header>
       <div id="home">
         <h4 style="font-size: 35px; font-weight: 800">
-          🐾 개발<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;자국
-          🐾
+          메인페이지로
         </h4>
       </div>
       <div class="title">
-        <h1 style="font-size: 50px; font-weight: 800">🐾 방명록 🐾</h1>
+        <h1 style="font-size: 50px; font-weight: 800"> NEW이름(추후)</h1>
       </div>
       <div class="button" id="guestButton">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
@@ -237,6 +249,18 @@
               <textarea class="form-control fs-10" placeholder="Leave a comment here" id="content"
                 style="height: 100px"></textarea>
               <label for="content">내용</label>
+            </div>
+            <!-- 별점 선택 드롭다운 추가 -->
+            <div class="form-floating mb-3">
+              <select name="별점" id="rating" class="form-control">
+                <option value="" selected>별점 선택</option>
+                <option value="1">★</option>
+                <option value="2">★★</option>
+                <option value="3">★★★</option>
+                <option value="4">★★★★</option>
+                <option value="5">★★★★★</option>
+              </select>
+              <label for="rating">별점</label>
             </div>
             <div class="form-floating mt-3">
               <input class="form-control mt-10" type="password" id="pwd" placeholder="비밀번호" />
@@ -269,12 +293,24 @@
                 <input type="text" class="form-control" id="writer-modal" />
               </div>
             </form>
+
             <form onsubmit="return false;">
               <div class="mb-3">
                 <label for="content-modal" class="col-form-label">내용</label>
                 <input type="text" class="form-control" id="content-modal" />
               </div>
             </form>
+            <div class="mb-3">
+              <label for="update-rating" class="col-form-label">별점</label>
+              <select class="form-control" id="update-rating">
+                <option value="">별점 선택</option>
+                <option value="1">★</option>
+                <option value="2">★★</option>
+                <option value="3">★★★</option>
+                <option value="4">★★★★</option>
+                <option value="5">★★★★★</option>
+              </select>
+            </div>
             <form onsubmit="return false;">
               <div class="mb-3">
                 <label for="password" class="col-form-label">비밀번호</label>
@@ -282,6 +318,7 @@
               </div>
             </form>
           </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="updateClose">
               닫기
