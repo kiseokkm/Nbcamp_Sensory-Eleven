@@ -9,7 +9,8 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
-  <link rel="stylesheet" href="guest.css" />
+  <link rel="stylesheet" href="../assets/css/guest.css" />
+  
 
 
   <script type="module">
@@ -218,16 +219,20 @@
         </h4>
       </div>
       <div class="title">
-        <h1 style="font-size: 50px; font-weight: 800"> NEW이름(추후)</h1>
+        <h1 style="font-size: 50px; font-weight: 800">Sensory-Eleven</h1>
       </div>
       <div class="button" id="guestButton">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
-          <img src="images/icon2.png" />
+          <img src="../assets/img/icon2.png"/>
         </button>
         <h5>작성하기</h5>
       </div>
     </header>
     <!-- 방명록 리스트 -->
+    <div class="search-container">
+      <input type="search" placeholder="검색">
+      <button>검색</button>
+    </div>
     <div class="accordion accordion-flush" id="list"></div>
 
     <!-- 입력 모달 -->
