@@ -27,12 +27,14 @@ const onClickSaveBtn = async(e) => {
     e.preventDefault();
     const notice = document.getElementById("notice");
     notice.innerText = "";
+    const doc_id = crypto.randomUUID();
     if (!await checkSessionUid()) {
         alert('관리자만 등록 가능합니다.');
         return;
     }
     const form = document.forms[0];
     const data = {
+        id: doc_id,
         name: form.name.value,
         mbti: form.mbti.value,
         introduce: form.introduce.value,
@@ -58,13 +60,13 @@ const onClickSaveBtn = async(e) => {
     }
 
     try{
-        const cardRef = doc(collection(db, "card"));
+        const cardRef = doc(db, "card", doc_id)
         await setDoc(cardRef, data);
     }catch (err) {
         alert("에러가 발생하여 데이터 저장에 실패하였습니다.");
         return;
     }
-    
+
     alert("저장 완료했습니다.");
     location.reload();
 }
