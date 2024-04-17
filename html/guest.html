@@ -15,8 +15,6 @@
     import {
       collection,
       addDoc,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import {
       doc,
       getDoc,
       getDocs,
@@ -24,11 +22,10 @@
       deleteDoc,
       query,
       orderBy,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    import database from "./js/database.js";
-    // db 호출
-    const db = database.getDb();
+    import info from "./js/database.js";  
+    const db = info.getDb();
 
     function renderStars(rating) {
       let stars = "";
