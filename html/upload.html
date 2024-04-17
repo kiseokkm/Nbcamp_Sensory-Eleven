@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
   <meta charset="UTF-8">
@@ -7,9 +7,7 @@
 
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-  <meta name="copyright" content="MACode ID, https://macodeid.com/">
-
-  <title>SeoGram - SEO Agency Template</title>
+  <title>Sensory-Eleven</title>
 
   <link rel="stylesheet" href="../assets/css/maicons.css">
 
@@ -19,6 +17,7 @@
 
   <link rel="stylesheet" href="../assets/css/theme.css">
   <script type="module" src="./js/comm.js"></script>
+  <script type="module" src="./js/upload.js"></script>
 </head>
 
 <body>
@@ -29,44 +28,46 @@
   <app-header></app-header>
   <div class="page-section bg-light" style="margin:100px 200px 200px 200px;border-radius: 10px;">
     <div class="container-fluid mt-4">
-      <div class="row">
+      <h2 class="mb-4 font-weight-medium text-secondary wow fadeInUp" style="margin-left: 50px;">팀원 추가하기</h2>
+      <h6 id="notice" class="mb-4 font-weight-medium text-accent wow fadeInUp" style="margin-left: 50px;font-size: 14px;"></h6>
+      <form class="row">
         <div class="col-lg-6 mb-5 mb-lg-0">
-          <h2 class="mb-4 font-weight-medium text-secondary wow fadeInUp" style="margin-left: 50px;">팀원 추가하기</h2>
-          <form action="#" class="contact-form py-5 px-lg-5">
+          <div class="contact-form py-5 px-lg-5">
 
             <div class="row form-group">
               <div class="col-md-6 mb-3 mb-md-0 wow fadeInUp">
                 <label class="text-black" for="name">이름</label>
-                <input type="text" id="name" class="form-control">
+                <input type="text" id="name" name="이름" class="form-control">
               </div>
               <div class="col-md-6 mb-3 mb-md-0 wow fadeInUp">
                 <label class="text-black" for="mbti">MBTI</label>
-                <select class="form-control">
+                <input id="mbti" type="text" list="list" class="form-control" name="mbti"></label>
+                <datalist id="list">
                   <option selected></option>
-                  <option>ISFP</option>
-                  <option>ISFJ</option>
-                  <option>ISTP</option>
-                  <option>ISTJ</option>
-                  <option>INFP</option>
-                  <option>INFJ</option>
-                  <option>INTP</option>
-                  <option>INTJ</option>
-                  <option>ESFP</option>
-                  <option>ESFJ</option>
-                  <option>ESTP</option>
-                  <option>ESTJ</option>
-                  <option>ENFP</option>
-                  <option>ENFJ</option>
-                  <option>ENTP</option>
-                  <option>ENTJ</option>
-                </select>
+                  <option value="ISFP"></option>
+                  <option value="ISFJ"></option>
+                  <option value="ISTP"></option>
+                  <option value="ISTJ"></option>
+                  <option value="INFP"></option>
+                  <option value="INFJ"></option>
+                  <option value="INTP"></option>
+                  <option value="INTJ"></option>
+                  <option value="ESFP"></option>
+                  <option value="ESFJ"></option>
+                  <option value="ESTP"></option>
+                  <option value="ESTJ"></option>
+                  <option value="ENFP"></option>
+                  <option value="ENFJ"></option>
+                  <option value="ENTP"></option>
+                  <option value="ENTJ"></option>
+                </datalist>
               </div>
             </div>
 
             <div class="row form-group wow fadeInUp">
               <div class="col-md-12">
                 <label class="text-black" for="text">본인 간략 소개</label>
-                <input type="email" id="email" class="form-control">
+                <input type="text" id="introduce" name="본인소개" class="form-control">
               </div>
             </div>
 
@@ -74,45 +75,43 @@
 
               <div class="col-md-12">
                 <label class="text-black" for="subject">첨부할 이미지 URL</label>
-                <input type="text" id="subject" class="form-control">
+                <input type="text" id="image_url" name="이미지링크" class="form-control">
               </div>
             </div>
 
             <div class="row form-group wow fadeInUp">
               <div class="col-md-12">
                 <label class="text-black" for="text">개인 블로그 주소</label>
-                <input type="email" id="email" class="form-control">
+                <input type="text" id="blog_url" name="블로그주소" class="form-control">
               </div>
             </div>
 
-
-          </form>
         </div>
-        <div class="col-lg-6 mb-5 mb-lg-0" style="margin-top: 50px;">
-          <form action="#" class="contact-form py-5 px-lg-5">
-            <h2 class="mb-4 font-weight-medium text-secondary"></h2>
-            <div class="row form-group wow fadeInUp">
-              <div class="col-md-12">
-                <label class="text-black" for="message">본인의 장점</label>
-                <textarea name="message" id="message" cols="30" rows="5" class="form-control"
-                  placeholder="Write your notes or questions here..."></textarea>
-              </div>
+        </div>
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="row form-group wow fadeInUp">
+            <div class="col-md-12">
+              <label class="text-black" for="advantage">본인의 장점</label>
+              <textarea name="장점" id="advantage" cols="30" rows="5" class="form-control"
+                placeholder="Write your notes or questions here..."></textarea>
             </div>
-            <div class="row form-group wow fadeInUp">
-              <div class="col-md-12">
-                <label class="text-black" for="message">본인의 협업 스타일</label>
-                <textarea name="message" id="message" cols="30" rows="5" class="form-control"
-                  placeholder="Write your notes or questions here..."></textarea>
-              </div>
+          </div>
+          <div class="row form-group wow fadeInUp">
+            <div class="col-md-12">
+              <label class="text-black" for="coop">본인의 협업 스타일</label>
+              <textarea name="협업스타일" id="coop" cols="30" rows="5" class="form-control"
+                placeholder="Write your notes or questions here..."></textarea>
             </div>
+          </div>
 
 
-            <div class="row form-group mt-4 wow fadeInUp">
-              <div class="col-md-12" style="display: flex;justify-content: right;margin-top: 50px;">
-                <input type="submit" value="Send Message" class="btn btn-primary">
-              </div>
+          <div class="row form-group mt-4 wow fadeInUp">
+            <div class="col-md-12" style="display: flex;justify-content: right;margin-top: 50px;">
+              <button id="save_btn" class="btn btn-primary">Save</button>
             </div>
+          </div>
           </form>
+
         </div>
       </div>
 
