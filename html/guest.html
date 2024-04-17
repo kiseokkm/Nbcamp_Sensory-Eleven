@@ -10,18 +10,11 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
   <link rel="stylesheet" href="../assets/css/guest.css" />
-  <script src="js/database.js"></script>
-
 
   <script type="module">
-    //공통으로 뺀거 빼봤는데도 로딩이안돼서 일단 넣어놈
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
     import {
       collection,
       addDoc,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
-    import {
       doc,
       getDoc,
       getDocs,
@@ -29,19 +22,10 @@
       deleteDoc,
       query,
       orderBy,
-    } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPKMfBYrh_6RXyTAD7B6_KLlXHzDP2mmk",
-      authDomain: "sensory-eleven.firebaseapp.com",
-      projectId: "sensory-eleven",
-      storageBucket: "sensory-eleven.appspot.com",
-      messagingSenderId: "903447585900",
-      appId: "1:903447585900:web:bc595869999f5b41dda449",
-      measurementId: "G-5Q6WJ5P46Y"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    import info from "./js/database.js";  
+    const db = info.getDb();
 
     function renderStars(rating) {
       let stars = "";
@@ -215,19 +199,19 @@
         const querySnapshot = await getDocs(searchQuery);
         clearList();
 
-        let resultsFound = false; 
+        let resultsFound = false;
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           if (matchesSearch(data, searchText)) {
             const itemHtml = createItemHtml(data, doc.id);
             appendToList(itemHtml);
-            resultsFound = true; 
+            resultsFound = true;
           }
         });
 
         if (!resultsFound) {
           alert("검색이 되지 않았습니다."); //검색 했을때 없을시 알람
-          location.reload(); 
+          location.reload();
         }
       } catch (error) {
         console.error("Error fetching documents: ", error);
@@ -279,8 +263,6 @@
       }
     });
 
-
-
   </script>
 </head>
 
@@ -289,13 +271,18 @@
     <header>
       <div id="home">
         <h4 style="font-size: 35px; font-weight: 800">
-          메인페이지로
+          <a href="index.html" style="text-decoration: none; color: inherit;">메인페이지로</a>
         </h4>
+
       </div>
       <div class="title">
         <h1 style="font-size: 50px; font-weight: 800">
-          <a href="guest.html" style="text-decoration: none; color: inherit;">Sensory-Eleven</a>
+          <a href="guest.html" style="text-decoration: none; color: inherit;">
+            <span style="color: #6C55F9;">Sensory</span>-Eleven
+          </a>
+        </h1>
       </div>
+      
       <div class="button" id="guestButton">
         <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
           <img src="../assets/img/icon2.png" />
@@ -305,7 +292,7 @@
     </header>
     <!-- 방명록 리스트 -->
     <div class="search-container">
-      <input type="search" placeholder="검색">
+      <input type="search" placeholder="원하는 제목 혹은 내용을 검색하세요." id="searchInput">
       <button id="searchButton">검색</button>
     </div>
     <div class="accordion accordion-flush" id="list"></div>
