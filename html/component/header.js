@@ -51,6 +51,9 @@ class Header extends HTMLElement {
             <li class="nav-item hidden" id="card_upload_link">
               <a class="nav-link" href="upload.html">멤버 카드 작성</a>
             </li>
+            <li class="nav-item hidden" id="guest_upload">
+              <a class="nav-link" href="#">작성하기</a>
+            </li>
             <button id="login_btn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
               data-bs-target="#loginbtn">
               Sign In
