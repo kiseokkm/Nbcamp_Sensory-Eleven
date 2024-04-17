@@ -2,7 +2,7 @@ import database from "./database.js";
 import Header from "../component/header.js";
 import Footer from "../component/footer.js";
 import { setSession, getSession, deleteSession } from "./session.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 export const checkLogin = () => {
     const card_upload_link = document.getElementById("card_upload_link");
