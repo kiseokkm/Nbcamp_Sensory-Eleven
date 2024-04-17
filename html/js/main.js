@@ -23,7 +23,7 @@ const getCardData = async () => {
             </div>
             <div class="col-lg-6 py-3 wow fadeInRight">
               <div class="img-fluid py-3 text-center">
-                <img src="${datas.image_url}" alt="" style="max-height: 250px;">
+                <img src="${datas.image_url}" alt="" style="max-height: 250px; border-radius: 100%;">
               </div>
             </div>
           </div>

@@ -7,6 +7,13 @@
   Version: 1.0
  */
 
+ @font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('../fonts/Pretendard-Regular.otf') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --primary: #6C55F9;
   --accent: #FF3D85;
@@ -20,8 +27,12 @@
   --light: #F6F5FC;
 }
 
+html {
+  font-family: 'Pretendard-Regular';
+}
+
 body {
-  font-family: "Work Sans", sans-serif;
+  font-family: 'Pretendard-Regular';
   line-height: 1.5;
   color: #2D2B3A;
 }
