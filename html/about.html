@@ -43,8 +43,9 @@
     const docRef = doc(db, "card", file);
     const docSnapshot = await getDoc(docRef);
     const data = docSnapshot.data();
-    console.log(data);
+    // console.log(data);
    
+    let github_url = data['github_url'];
     let advantage = data['advantage'];
     let blog_url = data['blog_url'];
     let coop = data['coop'];
@@ -54,14 +55,15 @@
     let mbti = data['mbti'];
     let name = data['name'];
 
-    console.log(advantage);
-    console.log(blog_url);
-    console.log(coop);
-    console.log(id);
-    console.log(image_url);
-    console.log(introduce);
-    console.log(mbti);
-    console.log(name);
+    // console.log(github_url);
+    // console.log(advantage);
+    // console.log(blog_url);
+    // console.log(coop);
+    // console.log(id);
+    // console.log(image_url);
+    // console.log(introduce);
+    // console.log(mbti);
+    // console.log(name);
 
     let temp_html = `<div class="container">
       <div class="text-center wow fadeInUp">
@@ -83,7 +85,7 @@
               <br> 장점: ${advantage} <br>
             </p>
             
-            <p> <a href="#" target="_blank">
+            <p> <a href="${github_url}" target="_blank">
                 <img class="icon" src="../image/githubIcon.png" style="width: 30px;height: 30px;" />
               </a>
               <a href="${blog_url}"
