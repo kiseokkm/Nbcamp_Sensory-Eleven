@@ -39,6 +39,7 @@ const onClickSaveBtn = async(e) => {
         mbti: form.mbti.value,
         introduce: form.introduce.value,
         image_url: form.image_url.value,
+        github_url: form.github_url.value,
         blog_url: form.blog_url.value,
         advantage: form.advantage.value,
         coop: form.coop.value
