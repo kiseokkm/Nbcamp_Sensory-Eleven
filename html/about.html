@@ -53,6 +53,7 @@
     let introduce = data['introduce'];
     let mbti = data['mbti'];
     let name = data['name'];
+    let github_url = data['github_url'];
 
     console.log(advantage);
     console.log(blog_url);
@@ -83,7 +84,8 @@
               <br> 장점: ${advantage} <br>
             </p>
             
-            <p> <a href="#" target="_blank">
+            <p> <a href="${github_url}"
+                target="_blank" style="margin-left: 10px">
                 <img class="icon" src="../image/githubIcon.png" style="width: 30px;height: 30px;" />
               </a>
               <a href="${blog_url}"
