@@ -10,6 +10,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
   <link rel="stylesheet" href="../assets/css/guest.css" />
+  <link rel="stylesheet" href="../assets/css/maicons.css">
+  <link rel="stylesheet" href="../assets/css/bootstrap.css">
+  <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
+  <link rel="stylesheet" href="../assets/css/theme.css">
 
   <head>
     <script type="module" src="./js/comm.js"></script>
@@ -275,12 +279,20 @@
   <div class="back-to-top"></div>
   <!-- header include -->
   <app-header></app-header>
-  
 
   <!-- 방명록 리스트 -->
-  <div class="search-container">
-    <input type="search" placeholder="원하는 제목 혹은 내용을 검색하세요." id="searchInput">
-    <button id="searchButton">검색</button>
+  <div class="top-controls">
+    <div class="search-container">
+      <input type="search" placeholder="원하는 제목 혹은 내용을 검색하세요." id="searchInput">
+      <button id="searchButton">검색</button>
+    </div>
+    <div class="button" id="guestButton">
+      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#writerModal">
+        <img src="../assets/img/icon2.png" />
+      </button>
+      <h5>작성하기</h5>
+    </div>
+  </div>
   </div>
   <div class="accordion accordion-flush" id="list"></div>
 
@@ -383,7 +395,6 @@
       </div>
     </div>
   </div>
-
   <!-- 삭제 모달 -->
   <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
