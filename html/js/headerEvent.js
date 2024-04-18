@@ -35,6 +35,7 @@ const onClickSignInFormBtn = () => {
             // sign in 페이지 닫기
             checkLogin();
             $("#loginbtn").modal("hide");
+            location.reload();
         })
         .catch((error) => {
             alert("계정이 없거나 아이디 또는 비밀번호를 잘못 입력하셨습니다.");
@@ -45,6 +46,7 @@ const onClickSignInFormBtn = () => {
 const onClickSignoutBtn = () => {
     deleteSession();
     checkLogin();
+    location.reload();
 }
 
 const checkSession = () => {

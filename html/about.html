@@ -18,28 +18,47 @@
   <link rel="stylesheet" href="../assets/vendor/animate/animate.css">
 
   <link rel="stylesheet" href="../assets/css/theme.css">
-
-  <script type="module" src="./js/comm.js"></script>
   <script type="module">
 
     const urlParams = new URLSearchParams(window.location.search);
     const file = urlParams.get('doc_id');
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { doc, getFirestore, getDoc  } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
+    import database from "./js/database.js";
+    import { doc, getFirestore, getDoc, deleteDoc  } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+    // 헤더 처리 및 관리자 체크 함수 import
+    import { comm_setSession, comm_checkSessionUid } from "./js/comm.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAPKMfBYrh_6RXyTAD7B6_KLlXHzDP2mmk",
-      authDomain: "sensory-eleven.firebaseapp.com",
-      projectId: "sensory-eleven",
-      storageBucket: "sensory-eleven.appspot.com",
-      messagingSenderId: "903447585900",
-      appId: "1:903447585900:web:bc595869999f5b41dda449",
-      measurementId: "G-5Q6WJ5P46Y"
-    };
+    const db = database.getDb();
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+    const update_btn = document.getElementById("update_btn");
+    const delete_btn = document.getElementById("delete_btn");
 
+    // 관리자 검사
+    comm_checkSessionUid().then(res => {
+      if (res){
+        update_btn.classList.remove("hidden");
+        delete_btn.classList.remove("hidden");
+      }
+    })
+
+    const onClickUpdateBtn = () => {
+      comm_setSession("update_id", file);
+      location.href = "./upload.html?st=u";
+    }
+
+    const onClickDeleteBtn = async () => {
+      // file = doc_id
+      const confirmflag = confirm("삭제된 데이터는 복구 불가합니다. 정말 삭제하시겠습니까?");
+      if (confirmflag){
+        await deleteDoc(doc(db, "card", file));
+        alert("삭제가 완료되었습니다.");
+        location.href = "./index.html";
+      }
+    }
+
+    update_btn.addEventListener("click", onClickUpdateBtn);
+    delete_btn.addEventListener("click", onClickDeleteBtn);
+
+    // card 불러오기
     const docRef = doc(db, "card", file);
     const docSnapshot = await getDoc(docRef);
     const data = docSnapshot.data();
@@ -94,7 +113,8 @@
               </a>
             </p>
           </div>
-        </div>`;
+        </div>
+        `;
         $('#read').append(temp_html);
   </script>
 </head>
@@ -106,9 +126,16 @@
   <!-- header include -->
   <app-header></app-header>
 
-  <div class="page-section bg-light" style="margin-top: 10px; margin: 50px 200px auto 200px; border-radius: 30px;" id="read">
+  <div class="wow fadeInUp" style="margin: 0 200px;">
+    <div class="col-md-12" style="display: flex;justify-content: right;margin-top: 50px;">
+      <button id="update_btn" class="btn btn-primary hidden" style="margin-right: 6px;">수정</button>
+      <button id="delete_btn" class="btn btn-danger hidden">삭제</button>
+    </div>
+  </div>
+  <div class="page-section bg-light" style="margin: 30px 200px;border-radius: 30px;" id="read">
   </div> <!-- .page-section -->
-
+  
+  
 
   <script src="../assets/js/jquery-3.5.1.min.js"></script>
   <script src="../assets/js/bootstrap.bundle.min.js"></script>
